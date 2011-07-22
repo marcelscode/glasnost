@@ -1,0 +1,139 @@
+======================================================
+| GLASNOST: Test if your ISP is shaping your traffic |
+======================================================
+
+Table of contents
+==================
+1. Introduction
+2. How to build Glasnost
+3. How Glasnost works
+4. Files included in this distribution
+5. Who we are
+
+
+1. Introduction
+================
+Glasnost is a tool to detect traffic shaping by ISPs, in particular blocking
+and throttling of application traffic.
+Glasnost enables lay users to easily test their broadband links for
+manipulation by just visiting a testing website. No setup is needed on the
+users' side.
+
+We built this tool as a part of our research activity to make the edge of
+the Internet more transparent. If you consider contributing your resources
+we appreciate this. This project's webpage can be found at
+	http://broadband.mpi-sws.org/transparency/glasnost.php
+
+More information about Glasnost can be found in our NSDI 2010 paper, which is
+linked from the webpage mentioned above.
+
+If you set up your own Glasnost test server, we ask you to obey the Glasnost
+license you can find in the COPYING file. Thank you.
+
+
+2. How to build and deplopy Glasnost
+=====================================
+
+Copy all the files included in this distribution to the web-server
+directory you want Glasnost to run from.
+Then, use the included Makefile to build and configure Glasnost. 
+Typing 'make' will build the server part of the testing tool and set
+all the necessary file permissions.
+
+The server part of the testing tool is written in C++ for Linux OS.
+Compiling it on other platforms might require modifications of the code.
+To zip some of the logfiles, we use zlib (-lz).
+Furthermore, libpcap (>0.8) is used to dump captured packets to disk,
+libmicrohttpd to implement a simple HTTP webserver, and curl to retrieve
+remote script files.
+You might need to install the development package of these libraries to
+have the necessary header files available.
+
+The server part 'gserver' has to run as root because it uses raw sockets to 
+capture packets. Hence, the suid bit has to be set if you want to run it as
+a normal user.
+The output directory 'logs' has to be set world-writable to allow the
+web-server to dump log files and traces in there.
+
+We do not recommend compiling the Java sources yourself, as a special
+version for Mac-Java is needed. The Mac version of Java does not allow 
+opening a Selector in a Java Applet, thus this call has to request 
+privileges. However, this requires that the jar file is signed and then 
+trusted by the user.
+This distribution always contains a pre-built jar for PC and Mac of the 
+latest version of the applet.
+
+If you nevertheless want to build the applet yourself, you can type
+	make applet
+for the PC version and
+	make applet-mac
+for the Mac version (the output of make will tell you how to sign the jar 
+file).
+
+The Java applet was tested with Java 1.6 on Windows, Linux, and MacOS X.
+
+On the server, you have to start gserver. Three parameters might be 
+of interest to you:
+  -i <iface>  Gives the name of the network interface. The default is 
+	      'eth0' which should be correct for most Linux users.
+  -d <logDir> Defines the directory Glasnost logs should be stored to.
+	      Default is '.'
+  -s <scriptFile> A file containing pre-defined Glasnost tests. You should
+		  point to the included protocols.spec file
+
+Next, adjust the variables in the head of glasnost.php. The file contains
+comments that explain the configure variables you need to adjust. Here, you
+can configure the log file directory and an alternative start page for the
+test. More, you can add multiple servers to run the test from to load
+balance tests.
+
+After this, you can run Glasnost tests from your own server by calling
+glasnost.php from your deployment.
+
+3. How Glasnost works
+======================
+Please refer to our NSDI 2010 paper on Glasnost. You can find the paper on
+our webpage:
+  http://broadband.mpi-sws.org/transparency/glasnost.php
+
+
+4. Files included in this distribution
+=======================================
+GlasnostReplayer.jar: The compiled PC version of the testing applet
+GlasnostReplayerMac.jar: A signed Mac version of the testing applet
+GlasnostReplayer.java: The source code of the Java Applet
+gserver.cc: The server part of the testing tool
+glasnost_replayer.{cc,h}: Server part that executes measurements
+http_server.cc: Built-in webserver to distribute applet and retrieve test 
+		results
+glasnost_parser.{cc,h}: Parser for the Glasnost test description files
+tools.{cc,h}: Auxiliary functions used in Glasnost
+script_validator.cc: Translate Glasnost test description to an intermediate
+		     representation
+glb.php: Glasnost test startpage
+glasnost.php: The testing web-page that steers the test and displays testing
+	      results
+glasnost-analysis2.php: Parse results and display them to the user
+protocols.spec: Sample tests that are bundled with Glasnost
+Makefile
+mpi.css: CSS file for the displayed HTML pages
+COPYING: The license for the Glasnost tool
+README: This file
+
+
+5. Who we are
+==============
+This tool is developed at the Max Planck Institute for Softwaresystems,
+Germany.
+
+If you have any questions or problems regarding our research or this tool,
+please to not hesitate to contact us via email: 
+	broadband@mpi-sws.mpg.de
+
+Our project page can be found at
+	http://broadband.mpi-sws.org/transparency/
+
+Peoples involved in this project can be found on
+	http://broadband.mpi-sws.org/transparency/glasnost.php
+	
+Please also refer to the COPYING file.

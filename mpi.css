@@ -1,0 +1,129 @@
+body { 
+       font-family: sans-serif;
+       background-color:white;
+       color: black;
+}
+a { 
+/*    text-decoration:none;*/
+    color:navy;
+    background-color: transparent;
+}
+
+a:hover {
+          color:#69acff;
+          background-color: transparent;
+}
+
+a.red { 
+    text-decoration:none;
+    color:#B21317;
+    background-color: transparent;
+}
+
+a.red:hover {
+          color:#b26d6e;
+          background-color: transparent;
+}
+
+.header { 
+	border-bottom:1px solid #69acff;
+	padding-bottom:5px;
+        padding-top: 10px;
+	margin-bottom:5px;
+	font:11px sans, sans-serif;
+	text-transform:uppercase;
+	letter-spacing:5px;
+        font-weight: bold;
+	color:#222;
+        background-color: white;
+}
+
+.indent { 
+          padding-left:10px;
+          /*width:100%;*/
+ }
+
+.indent2 { 
+          padding-left:30px;
+          /*width:100%;*/
+ }
+
+.rlink { 
+         padding-left:20px;
+         color: #c52b48;
+}
+.link { 
+         color: #c52b48;
+}
+
+.bullet{
+         list-style-image:url("http://broadband.mpi-sws.mpg.de/pics/square-bullet.png");
+ }
+
+.button{ 
+         font-weight:bold;
+         font-size:16px;
+         border:2px solid #69acff;
+         background-color:white;
+         background:url(pics/button-bg.png) repeat-x left top;
+         color:black;
+         border-style:outset;
+}
+
+.button:hover{ 
+               border:2px solid #c52b48;
+               border-style:outset;
+}
+
+.box{
+	border: 1px solid black;
+	background-color:white;
+	margin: 0px;
+	padding:5px;
+ }
+.box1{
+	background:#e8f2ff;
+ }
+.box2{
+	background:#d5e8ff;
+}
+
+table.box{
+  border-collapse:collapse;
+  border:0px;
+  margin: 20px 10px;
+}
+tr.rowbox{
+  border: 1px dashed gray;
+}
+td.rowone{
+  padding:10px;
+  vertical-align: top;
+  background-color: white;
+}
+td.rowtwo{
+  padding:10px;
+  vertical-align: top;
+  background-color: #ecf4ff;
+}
+td.click{
+  text-align:right;
+  vertical-align:middle;
+  padding-left:20px;
+}
+
+.code{
+  padding: 5px;
+  margin-left:20px;
+  background: #e8f2ff;
+  border: 1px solid #bfbfbf;
+  font-family: monospace;
+}
+
+td.spacer{
+  height: 5px;
+  max-height: 5px;
+  border: 0px;
+  background: #e8f2ff;
+  font-size: 1px;
+}
