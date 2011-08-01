@@ -1,0 +1,15 @@
+generate_summary2.pl extracts the necessary data from Glasnost log files and sorts out clearly broken test run data. 
+
+glasnost_differentiation_detector.pl analysis the extracted measurement data and outputs whether there is traffic shaping or not (this script is merely a port of glasnost_analysis2.php form the
+Glasnost distribution).
+
+### HOW TO process the Glasnost logs:
+
+The glasnost log contains two lines that hold all the measurement data.
+In fact, this data originally is passed to glasnost_analysis2.php and just looks like HTTP GET parameters.
+
+generate_summary2.pl extracts this data from the log file and generates a file that contains all the measurement data necessary for analysis, one line per test. 
+Note that you will need to adjust generate_summary2.pl (see comment in there). It only reads file with a specific name scheme, and the one in there is currently not the one collected as M-Lab. 
+Adjustment should be easy though.
+
+glasnost_differentiation_detector.pl takes the output from generate_summary2.pl as input. It performs a number of sanity checks and outputs information about traffic shaping - just like the Glasnost test does - in textual form.
