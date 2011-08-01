@@ -1,7 +1,8 @@
 generate_summary2.pl extracts the necessary data from Glasnost log files and sorts out clearly broken test run data. 
 
-glasnost_differentiation_detector.pl analysis the extracted measurement data and outputs whether there is traffic shaping or not (this script is merely a port of glasnost_analysis2.php form the
-Glasnost distribution).
+glasnost_differentiation_detector.pl analysis the extracted measurement data and outputs whether there is traffic shaping or not (this script is merely a port of glasnost_analysis2.php form the Glasnost distribution).
+
+NOTE: The Glasnost log file format changed early 2010. The current version of the scripts only supports the new format.
 
 ### HOW TO process the Glasnost logs:
 
@@ -13,3 +14,4 @@ Note that you will need to adjust generate_summary2.pl (see comment in there). I
 Adjustment should be easy though.
 
 glasnost_differentiation_detector.pl takes the output from generate_summary2.pl as input. It performs a number of sanity checks and outputs information about traffic shaping - just like the Glasnost test does - in textual form.
+
