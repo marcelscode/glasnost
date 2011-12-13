@@ -17,6 +17,10 @@ while true; do
     echo Removing record
     java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
       -s $UPDATE_SERVER del subdomain=$SLIVER_SUBDOMAIN type=A data=$SLIVER_IP
+    java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+      -s $UPDATE_SERVER del subdomain=$SLIVER_SUBDOMAIN2 type=A data=$SLIVER_IP
+    java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+      -s $UPDATE_SERVER del subdomain=$SLIVER_SUBDOMAIN3 type=A data=$SLIVER_IP
 
   elif [[ $curr_state == 0 ]]; then
     reg_success=-1;
@@ -26,6 +30,12 @@ while true; do
       java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
         -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
         subdomain=$SLIVER_SUBDOMAIN type=A ttl=$RECORD_TTL data=$SLIVER_IP
+      java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+        -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
+        subdomain=$SLIVER_SUBDOMAIN2 type=A ttl=$RECORD_TTL data=$SLIVER_IP
+      java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+        -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
+        subdomain=$SLIVER_SUBDOMAIN3 type=A ttl=$RECORD_TTL data=$SLIVER_IP
 
       reg_success=$?
     elif [ $curr_time -gt $cut_off ] 
@@ -34,6 +44,12 @@ while true; do
       java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
         -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
         subdomain=$SLIVER_SUBDOMAIN type=A ttl=$RECORD_TTL data=$SLIVER_IP
+      java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+        -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
+        subdomain=$SLIVER_SUBDOMAIN2 type=A ttl=$RECORD_TTL data=$SLIVER_IP
+      java -cp .:`ls *.jar | tr '\n', ':'` donar.update.client.UpdateClient \
+        -s $UPDATE_SERVER add donar-ttl=$EXPIRY_PERIOD \
+        subdomain=$SLIVER_SUBDOMAIN3 type=A ttl=$RECORD_TTL data=$SLIVER_IP
       reg_success=$?
     fi
     
