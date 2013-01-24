@@ -43,12 +43,5 @@ case "$1" in
 	    rsync --daemon --config=/home/mpisws_broadband/rsyncd.conf --port 7999
 	fi
 
-	if ! ps xa | grep monitor.sh | grep -v grep >/dev/null; then
-	    echo "Restarting DONAR monitor"
-	    TS=`date +%s`
-	    sudo nohup ./monitor.sh > logs/donar-${TS}.log 2>&1 &
-	#      ./monitor.sh > logs/donar.log &
-  	fi
-
 	;;
 esac
