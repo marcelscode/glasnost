@@ -38,7 +38,7 @@ static: gserver.o glasnost_replayer.o http_server.o tools.o glasnost_parser.o
 	$(CXX) $^ -pthread -lz -lrt curl/lib/libcurl.a /usr/lib/libpcap.a /usr/lib/libmicrohttpd.a $(CXX_FLAGS) -o gserver
 	
 protocols.spec.marshalled: script_validator
-	cat glasnost-tests/* > protocols.spec
+	#cat glasnost-tests/* > protocols.spec
 	./script_validator protocols.spec
 
 GlasnostReplayer.jar: GlasnostReplayer.java protocols.spec.marshalled
