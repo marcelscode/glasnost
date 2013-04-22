@@ -147,6 +147,10 @@ public class GlasnostReplayer extends Applet {
     public PayloadElement() {
     }
 
+    public String toString() {
+      return type+" n:"+n+" k:"+k+" data:"+data;
+    }
+    
     public int byteLength() {
 
       if (this.type == PayloadType.DATA)
@@ -195,7 +199,6 @@ public class GlasnostReplayer extends Applet {
 
       } else if (type_des.equals("RANDINT")) {
         this.type = PayloadType.RANDINT;
-
       } else if (type_des.equals("REPEAT")) {
         this.type = PayloadType.REPEAT;
 
@@ -254,7 +257,11 @@ public class GlasnostReplayer extends Applet {
         PayloadElement new_el = new PayloadElement(stream);
         this.payload.add(new_el);
         this.length += new_el.byteLength();
-      }
+      }      
+    }
+    
+    public String toString() {
+      return "SendCommand<len:"+length+" "+endpoint+" payload:"+payload.size()+">";
     }
 
     public void appendDataPayload(byte[] data) throws IOException {
@@ -869,6 +876,7 @@ public class GlasnostReplayer extends Applet {
      */
     public SocketChannel setupSocket(InetSocketAddress peer, Selector selector,
         int timeout) {
+      log(System.out,"setupSocket("+peer.getAddress()+","+peer.getPort()+")");
       assert (selector != null);
 
       SocketChannel sChannel = null;
@@ -1024,6 +1032,7 @@ public class GlasnostReplayer extends Applet {
 
     int writePacket(SocketChannel sChannel, Selector selector, ByteBuffer obuf,
         long endTime) {
+      log(System.out, "writePacket("+(obuf.limit() - obuf.position())+"):"+obuf);
       int wptr = 0;
       boolean connectionClosed = false;
       while ((wptr < obuf.limit()) && !connectionClosed) {
@@ -1097,7 +1106,7 @@ public class GlasnostReplayer extends Applet {
           }
         } else {
           connectionClosed = true;
-          log(System.out, "Time is up, ending (select() timed out)");
+          log(System.out, "Time is up, ending (select() timed out: write)");
           break;
         }
       }
@@ -1143,7 +1152,7 @@ public class GlasnostReplayer extends Applet {
 
             if (!connectionClosed && selKey.isReadable()) {
               sChannel = (SocketChannel) selKey.channel();
-
+              
               try {
                 int bytesRead = sChannel.read(ibuf);
 
@@ -1185,7 +1194,7 @@ public class GlasnostReplayer extends Applet {
           }
         } else {
           connectionClosed = true;
-          log(System.out, "Time is up, ending (select() timed out)");
+          log(System.out, "Time is up, ending (select() timed out: read)");
           break;
         }
       }
@@ -1323,6 +1332,7 @@ public class GlasnostReplayer extends Applet {
       buf.order(ByteOrder.BIG_ENDIAN);
 
       for (PayloadElement p : payload) {
+        log(System.out, "createMessage("+p+","+prevmsg+")");
 
         if (p.type == PayloadElement.PayloadType.DATA) {
           buf.put(p.data.toByteArray());
@@ -1360,7 +1370,7 @@ public class GlasnostReplayer extends Applet {
           int xmin = p.n;
           int xmax = p.k;
           // this alyways takes 4 bytes in Java
-          buf.putInt(xmin + (rnd.nextInt() % (xmax - xmin + 1)));
+          buf.putInt(xmin + (Math.abs(rnd.nextInt()) % (xmax - xmin + 1)));
         }
 
       }
@@ -1374,7 +1384,7 @@ public class GlasnostReplayer extends Applet {
      */
     boolean runTransfer(SocketChannel sChannel, Selector selector,
         String protocol, long timeout, boolean isServer, boolean sendControlFlow) {
-
+      System.out.println("runTransfer");
       if (sChannel == null) {
         start = System.currentTimeMillis();
         end = start;
@@ -1421,9 +1431,7 @@ public class GlasnostReplayer extends Applet {
       while (next_command_index < thisScript.commands.size()) {
 
         GlasnostCommand curr_com = thisScript.commands.get(next_command_index);
-        // log(System.out, "executing command " +
-        // Integer.toString(next_command_index) + " of " +
-        // thisScript.commands.size());
+        log(System.out, "executing command " + Integer.toString(next_command_index) + " of " + thisScript.commands.size() + " " + curr_com);
 
         if (curr_com.type == GlasnostCommand.CommandType.SEND) {
 
@@ -1435,6 +1443,7 @@ public class GlasnostReplayer extends Applet {
             weSend = isServer;
 
           if (weSend && sendControlFlow) {
+            log(System.out,"send a:"+weSend);
 
             byte[] b = new byte[send_com.length];
             rnd.nextBytes(b);
@@ -1443,6 +1452,7 @@ public class GlasnostReplayer extends Applet {
             message_payload.flip();
 
           } else if (weSend) {
+            log(System.out,"send b:"+weSend);
             // Question: why do we create a message even when we do not have to
             // send? (i.e. weSend=false)
             createMessage(message_payload, send_com.payload,
@@ -1522,6 +1532,7 @@ public class GlasnostReplayer extends Applet {
 
           } else {
 
+            log(System.out, "waitForRead("+send_com.length+")");
             // log(System.out, "Receiving " + send_com.length + " bytes");
             last_received_message.clear();
             assert (send_com.length <= last_received_message.capacity());
@@ -1551,6 +1562,7 @@ public class GlasnostReplayer extends Applet {
                   + send_com.length + ")");
               break;
             }
+            log(System.out, "doneRead("+r+")");
 
             // System.out.println("DEBUG: ==read " + r + '/' + obuf.limit());
 
@@ -1620,13 +1632,24 @@ public class GlasnostReplayer extends Applet {
       return (!protocolError && ((bytesTransmitted + bytesReceived) > 0));
     }
 
+    /**
+     * Read the next command from the (control) server.
+     * 
+     * Command is terminated by a newline (\n)
+     * 
+     * @param commandChannel
+     * @param command
+     * @return
+     * @throws SocketTimeoutException
+     * @throws IOException
+     */
     public String readNextCommand(SocketChannel commandChannel,
         ByteBuffer command) throws SocketTimeoutException, IOException {
 
-      byte buffer[] = null;
+      byte[] buffer = null; // hold the line
       boolean commandFound = false;
       while (!commandFound) {
-        byte cbuff[] = command.array();
+        byte[] cbuff = command.array();
         for (int i = 0; (i < command.position()) && (!commandFound); i++) {
           if (cbuff[i] == '\n') {
             buffer = new byte[i + 1];
@@ -1661,7 +1684,9 @@ public class GlasnostReplayer extends Applet {
       if (buffer == null)
         return null;
 
-      return new String(buffer, "US-ASCII");
+      String ret = new String(buffer, "US-ASCII");
+      System.out.println("readNextCommand():" + ret);
+      return ret;
     }
 
     /**
@@ -1945,6 +1970,7 @@ public class GlasnostReplayer extends Applet {
       ByteBuffer inCommand = ByteBuffer.allocate(32000);
       ByteBuffer outCommand = ByteBuffer.allocate(32000);
       try {
+        log(System.out, "Connecting to commandChannel:"+serverIP+":"+commandPort);
         commandChannel = SocketChannel.open(new InetSocketAddress(serverIP,
             commandPort));
         commandChannel.configureBlocking(true);
