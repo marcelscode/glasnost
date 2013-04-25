@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   minWidth="100" minHeight="200"
+			   
+			   applicationComplete="init();">
+		
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	<mx:ProgressBar id="progress_bar"
+					labelPlacement="center"
+					mode="manual"
+					width="100%" height="40"
+					label="This is my label."
+					barSkin="skins.ProgressBarSkin"
+					trackSkin="skins.ProgressBarTrackSkin"
+					>
+		
+			
+	</mx:ProgressBar>
+		
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import glasnost.GlasnostReplayer;
+			
+//			barSkin="skins.MyProgressBarSkin"
+
+//          barSkin="mx.skins.halo.ProgressBarSkin"			
+//			barColor="0x69acff"
+//			trackColor="0xffffff"	
+
+			private function init():void {
+				trace("init()");
+				
+				var replayer:GlasnostReplayer = new GlasnostReplayer(this.root.loaderInfo.parameters, progress_bar);				
+//				replayer.start();
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:Application>

@@ -38,32 +38,31 @@ import java.util.Vector;
 import java.util.ArrayList;
 
 /**
- * This code functions as a Java Application and a Java Applet. It can replay
- * arbitrary application-level protocols using TCP by replaying protocol
- * specifications.
+ * This code functions as a Java Application and a Java Applet.
+ * It can replay arbitrary application-level protocols using TCP by replaying protocol specifications.
  * 
  * 
- * How to sign a java applet: - Generate a self-signed certificate: keytool
- * -genkey -alias broadband.mpi-sws.mpg.de - jar the applet jar -cvf applet.jar
- * BlockingDetector*.class - sign the jar jarsigner applet.jar
- * broadband.mpi-sws.mpg.de
- * 
- * 
- * Known Problems: Detecting if a connection was reset is not trivial in Java.
- * Java just throws a IOException if read() or write() fails. We have to parse
- * the Exception text. However, some versions of Java will localize this
- * message.
- * 
- * Known Limitations: The current implementation only allows to run two
- * protocols and two ports at a time.
- * 
- * Note that the maximum duration of a test is 30 seconds (enforced here and in
- * the server part)
+ * How to sign a java applet:
+ *  - Generate a self-signed certificate:
+ *       keytool -genkey -alias broadband.mpi-sws.mpg.de
+ *  - jar the applet
+ *       jar -cvf applet.jar BlockingDetector*.class
+ *  - sign the jar
+ *        jarsigner applet.jar broadband.mpi-sws.mpg.de
+ *
+ *
+ *  Known Problems: Detecting if a connection was reset is not trivial in Java. Java just
+ *                  throws a IOException if read() or write() fails. We have to parse the
+ *                  Exception text. However, some versions of Java will localize this message.
+ *                 
+ *  Known Limitations: The current implementation only allows to run two protocols and two 
+ *                     ports at a time.
+ *                     
+ *  Note that the maximum duration of a test is 30 seconds (enforced here and in the server part)
  */
 
 // TODO Add functionality to check whether packets were altered in flight
-// TODO Allow to just specify the scriptFile ID w/o protocol name (we take this
-// from the scriptFile then) -> Currently, the php script works around this
+// TODO Allow to just specify the scriptFile ID w/o protocol name (we take this from the scriptFile then) -> Currently, the php script works around this
 
 public class GlasnostReplayer extends Applet {
 
@@ -1032,7 +1031,7 @@ public class GlasnostReplayer extends Applet {
 
     int writePacket(SocketChannel sChannel, Selector selector, ByteBuffer obuf,
         long endTime) {
-      log(System.out, "writePacket("+(obuf.limit() - obuf.position())+"):"+obuf);
+      log(System.out, "writePacket("+(obuf.limit() - obuf.position())+","+(endTime-System.currentTimeMillis())+"):"+obuf);
       int wptr = 0;
       boolean connectionClosed = false;
       while ((wptr < obuf.limit()) && !connectionClosed) {
