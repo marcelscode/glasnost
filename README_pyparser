@@ -1,0 +1,17 @@
+The Python Parser is a Python/Django project that helps to make use of GLASNOST data for high-level research questions.
+
+The projects helps in the following: 
+
+	1. Extracting the main outcome or "verdict" from test logs. This is an update of the original algorithm provided by the authors, covering corner cases and "abnormal" tests.
+	
+	2. Adding historical based geo-leocation + ASN data
+
+	3. Storing the output in SQL, easing making aggregated (ISP/country level) datasets.
+
+
+
+Build & run steps are provided in a seperate file in the project.
+
+
+Author: Hadi Asghari <hd.asghari@gmail.com>
+Project: The Network is Aware <http://dpi.ischool.syr.edu/Home.html>

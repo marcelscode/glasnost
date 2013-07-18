@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Cross check MPI</title>
+    <style>
+	       table.green {
+            border-collapse: collapse;
+            border: 2px solid green;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table.green tr.head {
+            font-weight:bold;
+            background-color: #90ee90;
+            border: 2px solid green;
+        }
+        table.green td {
+            border: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Run MPI's differentiation script</h1>
+
+<form action="{% url crosscheck_run %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Start" />
+</form>
+
+{% if lst1 %}
+    <hr />
+    <table class="green" style="font-family:monospace">
+        <tr class="head">
+            <td>time</td><td>ip</td><td>server</td><td>up_block</td><td>dn_block</td><td>up_app_diff</td><td>up_port_diff</td><td>dn_app_diff</td><td>dn_port_diff</td><td>error</td>
+        </tr>
+        {% for j in lst1 %}
+            {% if not j.err %}
+             <tr {% if j.err %}style="color:gray" {% endif %}>
+                 <td>{{ j.test.start_time|date:"Y-m-d H:i" }}</td><td>{{ j.test.client_ip  }}</td><td>{{ j.test.mlab_server  }}</td>
+                 <td>{{ j.up_block }}</td><td>{{ j.dn_block }}</td>
+                 <td>{{ j.up_app_diff }}</td><td>{{ j.up_port_diff }}</td>
+                 <td>{{ j.dn_app_diff }}</td><td>{{ j.dn_port_diff }}</td>
+                 <td>{{ j.error }}</td>
+             </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if lst2 %}
+    <hr />
+    <table class="green" style="font-family:monospace">
+        <tr class="head">
+            <td colspan="10">Output</td>
+        </tr>
+        {% for j in lst2 %}
+            <tr>
+                {% if j == '---' %}
+                    <td colspan="10" style="background-color: darkgreen"></td>
+                {% else %}
+                    {% for jj in j %} <td>{{ jj|safe }}</td>  {% endfor %}
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+</body>
+</html>

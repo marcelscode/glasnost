@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <style>
+	       table.green {
+            border-collapse: collapse;
+            border: 2px solid green;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table.green tr.head {
+            font-weight:bold;
+            background-color: #90ee90;
+            border: 2px solid green;
+        }
+        table.green td {
+            border: 1px solid green;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>Process Logs - choose task:</h1>
+
+<form action="{% url main_process_logs %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Start" />
+</form>
+
+{% if lst %}
+    <hr />
+    <table class="green" style="font-family:monospace;font-size:small">
+        <tr class="head">
+            {% if tsk == 'geo' %}
+                <td>date</td><td>#tests</td><td>geofile</td>{# <td>runtime</td> #}
+            {% endif %}
+            {% if tsk == 'pars' %}
+                <td>date</td><td>total-tests</td><td>skipped-v1/v2</td><td>no-limit(ok)</td><td>limit-dpi</td><td>limit-port</td><td>no-limit-half(ok1/2)</td><td>undefined</td>
+            {% endif %}
+            {% if tsk == 'imp' %}
+                <td colspan="10">Output</td>
+            {% endif %}
+            {% if tsk == 'debug' %}
+                <td>testid</td><td>date</td>
+                <td>u_app</td><td>d_app</td><td>u_port</td><td>d_port</td><td width="120px">u_failed</td><td width="120px">d_failed</td>
+                <td>mu_app</td><td>md_app</td><td>mu_port</td><td>md_port</td><td width="120px">mu_failed</td><td width="120px">md_failed</td>
+                <td width=300px>errors</td>
+            {% endif %}
+        </tr>
+        {% for j in lst %}
+            <!--   -->
+         <tr
+                 {% if j.u_app_diff !=  j.mu_app_diff or j.d_app_diff != j.md_app_diff or j.u_failed != j.mu_failed or j.d_failed != j.md_failed  or j.u_port_diff != j.mu_port_diff or j.d_port_diff != j.md_port_diff or j.error != j.merror %}
+                     style="color:red"{% endif %}>
+            {% if tsk == 'debug' %}
+                <td>{{ j.tstid }}</td><td>{{ j.date|date:"d-m-Y" }}</td>
+                <td style="color:lightgray">{{ j.u_app_diff }}</td><td style="color:lightgray">{{ j.d_app_diff }}</td>
+                <td  style="ccolor:lightgray">{{ j.u_port_diff }}</td><td  style="ccolor:lightgray">{{ j.d_port_diff }}</td>
+                <td>{{ j.u_failed }}</td><td>{{ j.d_failed }}</td>
+                <td style="color:lightgray">{{ j.mu_app_diff }}</td><td style="color:lightgray">{{ j.md_app_diff }}</td>
+                <td style="ccolor:lightgray">{{ j.mu_port_diff }}</td><td  style="ccolor:lightgray">{{ j.md_port_diff }}</td>
+                <td>{{ j.mu_failed }}</td><td>{{ j.md_failed }}</td>
+                {% if j.error or j.merror %}
+                <td style="ccolor:magenta">[{{ j.error }}][{{ j.merror }}]</td>
+                {% else %}
+                    <td>{{ j.error }} |{{ j.merror }}</td>
+                {% endif %}
+            {% else %}
+                {% if j == '---' %}
+                    <td colspan="10" style="background-color: darkgreen"></td>
+                {% else %}
+                        {% for jj in j %} <td>{{ jj|safe }}</td>  {% endfor %}
+                {% endif %}
+            {% endif %}
+         </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+{% if tmpl %}
+    <hr/>
+    <table class="green" style="font-family:monospace">
+    <tr class="head"><td>Key</td><td>count</td></tr>
+    {% for it in tmpl %}
+    <tr><td>{{ it.0 }}</td><td>{{ it.1 }}</td></tr>
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>
