@@ -1,3 +1,7 @@
+# Glasnost Parser v2.
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
+
+
 import os, sys, re, time
 from datetime import timedelta, datetime
 from django import forms
@@ -10,7 +14,7 @@ from parser.glasAnalyzer import glasnost_analysis_v2
 from parser.glasParser import parse_summary_string_log2, pre_parse_log
 from parser.glasParser_logv1 import get_log_name, parse_log_oldstyle1
 from lib import geoasn
-from crosscheck.mpiWrapper import mpiWrapper
+#from crosscheck.mpiWrapper import mpiWrapper
 from settings import GEOASN_ROOT, GLASNOST_ROOT
 
 
@@ -23,7 +27,6 @@ def ProcessLogs(request):
                                   choices=( ('imp', 'Import logs'),
                                             ('geo', 'Update Geo & ASN'),
                                             ('pars','Parse, analyze and store verdicts'),))
-                                            #('debug', 'Analysis2 vs MPI (debugging)'),))
 
     if request.method == 'POST':
         form = ThisForm(request.POST)
@@ -45,8 +48,6 @@ def ProcessLogs(request):
                             l = task_update_geoasn(dt,geodb,asndb,paths)
                         elif tsk== 'pars':
                             l = task_parse_analyze(dt)
-                        elif tsk=='debug':
-                            l = task_analysis2_vs_mpi(dt)
                         lst += l
                     except Exception as ex:
                          transaction.rollback()
@@ -153,7 +154,7 @@ def task_parse_analyze(dt):
 
     if tests:
         n = len(tests) - skipv1
-        of, df, pf, hf, uf = (stat['OK']*100./n, stat['DPI']*100./n, stat['PORT']*100./n,stat['OK1/2']*100./n,stat['UNDEF']*100./n)
+        of, df, pf, hf, uf = (stat['OK']*100./n, stat['DPI']*100./n, stat['PORT']*100./n,stat['OK1/2']*100./n,stat['UNDEF']*100./n) if n!=0 else (0,0,0,0,0)
         lst = [(dt,len(tests),"%s/%s"%(skipv1,skipv2),round(of),round(df),round(pf),round(hf),round(uf))]
         print >>sys.stderr, "   => tests,skipv1/2,OK,DPI,PORT,OK1/2,UNDEF=" + str(lst) #
     else:

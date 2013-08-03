@@ -79,7 +79,6 @@ INSTALLED_APPS = (
     #'django.contrib.staticfiles',	
     'django.contrib.messages',
     'parser',
-    'crosscheck',
  )
 
 # A sample logging configuration. The only tangible logging

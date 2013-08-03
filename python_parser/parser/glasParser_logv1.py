@@ -1,3 +1,6 @@
+# Glasnost Parser v2.
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
+
 import time
 import os,sys, glob
 from datetime import datetime, timedelta
@@ -178,7 +181,7 @@ def parse_log_oldstyle1(fl):
 
 
 
-# Note: commoneted out for now, will be used later on for V0 logs. For V1 logs we have decided to go with
+# Note: commeneted out, Can be used for V0 logs (2008 - not available on MLabs)
 #def parse_summary_string_log1(client_sum, server_sum):
 #    info = {'port_app':None, 'port_neu':None, 'duration': None, 'maxup':None, 'maxdn':None}
 #    client_sum = client_sum.strip()
@@ -250,7 +253,7 @@ def parse_log_oldstyle1(fl):
 #        measurements.append( GlasMeasurement('d','np','cf')\
 #                     .client_data_1(kv['tcpdown%d'%i], kv['tcpdownl%d'%i], kv.get('tcpdownr%d'%i,0))\
 #                     .server_data_1(kv['stcpup%d'%i],kv['stcpupl%d'%i],kv.get('stcpupr%d'%i,0),kv.get('stcpuprs%d'%i,0)) )
-#        # todo: double check with marcel if the way that we're matching up/downs are correct...
+#        # note: double check with MPI people if the way that we're matching up/downs is correct.
 #    info['maxup'] = max(x.speed() for x in measurements if x.dir=='u')
 #    info['maxdn'] = max(x.speed() for x in measurements if x.dir=='d')
 #    return (measurements, info)

@@ -1,3 +1,6 @@
+# Glasnost Parser v2.
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
+
 from datetime import datetime
 import re
 from django.db import models
@@ -20,6 +23,7 @@ class GlasTest(models.Model):
     skip_this   = models.BooleanField()
     created     = models.DateTimeField(default=datetime.now())
     notes       = models.TextField(null=True)
+    skip_reason = models.TextField(null=True)
 
     class Meta:
         unique_together = ('start_time', 'client_ip', 'mlab_server')
@@ -28,6 +32,7 @@ class GlasTest(models.Model):
     @staticmethod
     def factory(ti):
         skip = False if ti['done']==1 else True # default value
+        skip_reason = None if ti['done']==1 else 'Not Done' # default value
         obj  = GlasTest(
             client_ip   = ti['client_ip'],
             start_time  = ti['start_time'],
@@ -41,7 +46,8 @@ class GlasTest(models.Model):
             runtime     = ti['runtime'],
             mlab_server = ti['mlab_server'],
             sysinfo     = ti['sysinfo'],
-            skip_this   = skip
+            skip_this   = skip,
+            skip_reason = skip_reason
             )
         return obj
     #

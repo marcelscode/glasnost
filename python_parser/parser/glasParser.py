@@ -1,6 +1,6 @@
 # Glasnost Parser v2.
-# Created 08-nov-2011 by Hadi Asghari (http://deeppacket.info)
-#
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
+
 import gzip, os, time, re, sys, datetime
 from glasMeasure import GlasMeasurement
 

@@ -1,5 +1,5 @@
 # Glasnost Parser v2.
-# Created 08-nov-2011 by Hadi Asghari (http://deeppacket.info)
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
 #
 # Statistics about test streams
 
@@ -58,8 +58,6 @@ class GlasMeasurement:
         self.cli_rst = 1
 
     ##########################################################
-
-    # todo: compare w/ def updatev0(self,cbps,sbps,crt, r ,rs):
 
     def client_data_1(self,bps,length_ms,resets):
         self.cli_t     = float(length_ms) /1000.0

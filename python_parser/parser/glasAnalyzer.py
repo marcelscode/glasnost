@@ -1,5 +1,5 @@
 # Glasnost Parser v2.
-# Created 05-mar-2012 by Hadi Asghari (http://deeppacket.info)
+# Developed 2011/2012 by Hadi Asghari (http://deeppacket.info)
 #
 # Module that analyzes stream statistics for one single Glasnost test ,
 # and returns back verdicts (about throlttling/blocking), plus warnings & debug info
