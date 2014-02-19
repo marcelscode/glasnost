@@ -43,7 +43,7 @@ protocols.spec.marshalled: script_validator
 
 GlasnostReplayer.jar: GlasnostReplayer.java protocols.spec.marshalled
 	$(JAVAC) GlasnostReplayer.java
-	jar cf GlasnostReplayer.jar GlasnostReplayer*.class protocols.spec.marshalled
+	jar cfm GlasnostReplayer.jar GlasnostReplayer.manifest GlasnostReplayer*.class protocols.spec.marshalled
 
 GlasnostReplayerMac.jar: GlasnostReplayer.java protocols.spec.marshalled
 	mkdir -p build
@@ -51,7 +51,7 @@ GlasnostReplayerMac.jar: GlasnostReplayer.java protocols.spec.marshalled
 	cp protocols.spec.marshalled build/
 	cat GlasnostReplayer.java |grep -v MACONLY >build/GlasnostReplayer.java
 	(cd build && $(JAVAC) GlasnostReplayer.java)
-	(cd build && jar cf GlasnostReplayerMac.jar GlasnostReplayer*.class protocols.spec.marshalled)
+	(cd build && jar cfm GlasnostReplayerMac.jar GlasnostReplayer.manifest GlasnostReplayer*.class protocols.spec.marshalled)
 	mv build/GlasnostReplayerMac.jar .
 	rm -f build/*.class build/GlasnostReplayer.java build/protocols.spec.marshalled
 	rmdir build
