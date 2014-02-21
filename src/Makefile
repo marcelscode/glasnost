@@ -48,7 +48,7 @@ GlasnostReplayer.jar: GlasnostReplayer.java protocols.spec.marshalled
 GlasnostReplayerMac.jar: GlasnostReplayer.java protocols.spec.marshalled
 	mkdir -p build
 	rm -f build/*.class
-	cp protocols.spec.marshalled build/
+	cp protocols.spec.marshalled GlasnostReplayer.manifest build/
 	cat GlasnostReplayer.java |grep -v MACONLY >build/GlasnostReplayer.java
 	(cd build && $(JAVAC) GlasnostReplayer.java)
 	(cd build && jar cfm GlasnostReplayerMac.jar GlasnostReplayer.manifest GlasnostReplayer*.class protocols.spec.marshalled)
