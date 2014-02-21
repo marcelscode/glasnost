@@ -53,7 +53,7 @@ GlasnostReplayerMac.jar: GlasnostReplayer.java protocols.spec.marshalled
 	(cd build && $(JAVAC) GlasnostReplayer.java)
 	(cd build && jar cfm GlasnostReplayerMac.jar GlasnostReplayer.manifest GlasnostReplayer*.class protocols.spec.marshalled)
 	mv build/GlasnostReplayerMac.jar .
-	rm -f build/*.class build/GlasnostReplayer.java build/protocols.spec.marshalled
+	rm -f build/*.class build/GlasnostReplayer.java build/protocols.spec.marshalled build/GlasnostReplayer.manifest
 	rmdir build
 	@echo "----------------------------------------------------------------------------------------------"
 	@echo "You have to sign GlasnostReplayerMac.jar as it needs to execude a privileged function on Macs."
