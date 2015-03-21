@@ -2,6 +2,29 @@
 | GLASNOST: Test if your ISP is shaping your traffic |
 ======================================================
 
+The goal of our Glasnost project is to make access networks, such as 
+residential cable, DSL, and cellular broadband networks, more transparent 
+to their customers.
+
+ISPs are increasingly deploying a variety of middleboxes (e.g., firewalls,
+traffic shapers, censors, and redirectors) to monitor and to manipulate 
+the performance of user applications. Most ISPs do not reveal the details 
+of their network deployments to their customers. We believe that this 
+knowledge is important to help users make a more informed choice of their 
+ISP. Further, such knowledge is also useful for researchers designing 
+protocols and systems that run on top of these networks.
+
+To improve network transparency, we are building online tools that are 
+easy to use and publishing them on this web page. Currently, there are two
+tools you could use to test your ISP. We will release more tools as we 
+develop them in the future. To download the tools, please go to the Source 
+tab and check out the sources from git. The tools are in the bin folder.
+
+The Glasnost data have been analyzed by "The network is aware" project 
+(http://deeppacket.info) to identify deep packet inspection techniques. You 
+can find more information about the DPI project at http://deeppacket.info 
+and more information about the DPI data at the Wiki of this github project. 
+
 Table of contents
 ==================
 1. Introduction
