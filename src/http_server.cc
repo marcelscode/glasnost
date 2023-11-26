@@ -200,9 +200,9 @@ string fetchRemoteFile(string scriptUrl, string dir, bool preferID = true) {
 }
 
 
-int sendFile(struct MHD_Connection *connection, const char *file) {
+MHD_Result sendFile(struct MHD_Connection *connection, const char *file) {
 
-	int ret;
+	MHD_Result ret;
 	struct MHD_Response *response;
 
 	log(stdout, "Request to send back file '%s'", file);
@@ -282,9 +282,9 @@ int sendFile(struct MHD_Connection *connection, const char *file) {
 #if 0
 // old version: serves the file in source format
 // serve a script with the given id
-int fetchTest(struct MHD_Connection *connection, const char *id) {
+MHD_Result fetchTest(struct MHD_Connection *connection, const char *id) {
 
-	int ret;
+	MHD_Result ret;
 	struct MHD_Response *response;
 
 	// Now, we have to sanitize id, check that id has only hex-decimal characters
@@ -363,9 +363,9 @@ int fetchTest(struct MHD_Connection *connection, const char *id) {
 
 // serve a script with the given id
 // new version: serves the compact representation of the parsed script
-int fetchTest(struct MHD_Connection *connection, const char *id, bool recursiveSearch = false, bool doSerialize = true) {
+MHD_Result fetchTest(struct MHD_Connection *connection, const char *id, bool recursiveSearch = false, bool doSerialize = true) {
 
-	int ret;
+	MHD_Result ret;
 	struct MHD_Response *response;
 
 	// Now, we have to sanitize id, check that id has only hex-decimal characters
@@ -537,7 +537,7 @@ bool getline(char *buf, int bufsize, FILE *infile) {
 }
 
 
-int proxyTestResultPage(struct MHD_Connection *connection, const char *id, const char *ip, const char *hostname, const char *nextPage) {
+MHD_Result proxyTestResultPage(struct MHD_Connection *connection, const char *id, const char *ip, const char *hostname, const char *nextPage) {
 
 	// - Use ID, IP, and Hostname to find the log file of the test run
 	// - Parse the log file and read in the parameters
@@ -545,7 +545,7 @@ int proxyTestResultPage(struct MHD_Connection *connection, const char *id, const
 	//    Add JScript that immediately submits the form to the server
 	//    Add a button, say that the results are ready and that the user should click the button
 
-	int ret;
+	MHD_Result ret;
 	struct MHD_Response *response;
 	string fname = logDir + "/glasnost_" + ip + '_' + hostname + '_' + id + ".log";
 
@@ -643,7 +643,7 @@ int proxyTestResultPage(struct MHD_Connection *connection, const char *id, const
 	return ret;
 }
 
-static int answerToConnection(void * cls, struct MHD_Connection * connection,
+static MHD_Result answerToConnection(void * cls, struct MHD_Connection * connection,
 		const char * url, const char * method, const char * version,
 		const char * upload_data, size_t * upload_data_size, void ** ptr) {
 
@@ -709,7 +709,7 @@ static int answerToConnection(void * cls, struct MHD_Connection * connection,
 
 	error(stderr, "Unknown request: %s", url);
 	struct MHD_Response *response = MHD_create_response_from_data(strlen(errorPage400), (void*) errorPage400, MHD_NO, MHD_NO);
-	int ret = MHD_queue_response(connection, MHD_HTTP_BAD_REQUEST, response);
+	MHD_Result ret = MHD_queue_response(connection, MHD_HTTP_BAD_REQUEST, response);
 	MHD_destroy_response(response);
 	return ret;
 }
